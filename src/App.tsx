@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  WechatOutlined,
+} from '@ant-design/icons';
+import { Layout } from 'antd';
+import React, { useState } from 'react';
+import LeftMenu from './components/LeftMenu';
+import "./App.css"
 
-function App() {
+const { Header, Sider, Content } = Layout;
+
+const App: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout>
+      <Sider trigger={null} collapsible collapsed={collapsed}
+        style={{
+          height: '100vh',
+        }}
+      >
+        <div className="logo" ><WechatOutlined />  微信备份</div>
+        <LeftMenu />
+      </Sider>
+      <Layout className="site-layout">
+        <Header className="site-layout-background" style={{ padding: 0}}>
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: () => setCollapsed(!collapsed),
+          })}
+        </Header>
+        <Content
+          className="site-layout-background"
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          Content
+        </Content>
+      </Layout>
+    </Layout>
   );
-}
+};
 
 export default App;
