@@ -7,6 +7,7 @@ import { Layout } from 'antd';
 import React, { useState } from 'react';
 import LeftMenu from './components/LeftMenu';
 import "./App.css"
+import { Outlet } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
@@ -38,7 +39,7 @@ const App: React.FC = () => {
             minHeight: 280,
           }}
         >
-          Content
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
