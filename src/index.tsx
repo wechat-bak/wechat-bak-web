@@ -3,23 +3,41 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter,  Routes, Route } from "react-router-dom";
 import Wexin from './components/wexin';
 import Txl from './components/TXL';
+import { BrowserRouter ,useRoutes} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const routeData = [
+  {
+    path:"/",
+    element: <App />,
+    children:[
+      {
+        path: "/wx",
+        element: <Wexin />,
+        index: true
+      },
+      {
+        path: "/txl",
+        element: <Txl />,
+      }
+    ]
+  }
+]
+
+
+const MyRoutes = ()=>{
+  let routes = useRoutes(routeData)
+  return routes
+}
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Routes>
-      
-      <Route path="/" element={<App />}>
-        <Route path="/wx" element={<Wexin />} />
-        <Route path="/txl" element={<Txl />} />
-      </Route>
-    </Routes>
+      <MyRoutes />
     </BrowserRouter>
   </React.StrictMode>
 );

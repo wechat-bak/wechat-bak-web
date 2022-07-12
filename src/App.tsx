@@ -49,6 +49,16 @@ const App: React.FC = () => {
         <div className="logo" ><WechatOutlined />  微信备份</div>
         <LeftMenu />
       </Sider>
+      <Sider 
+        width={300}
+        style={{
+          // height: '100vh',
+          backgroundColor:'grey',
+          color: '#FFF'
+        }}
+      >
+        123
+      </Sider>
       <Layout className="site-layout">
         <Header className="site-layout-background" style={{ padding: 0}}>
           {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {

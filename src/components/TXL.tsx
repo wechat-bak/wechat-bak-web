@@ -1,8 +1,30 @@
-import {FC} from 'react';
+import React from 'react';
+import './TXL.css'
 
-
-const Txl: FC = () => {
-    return <div>通讯录</div>
+const scroll = ()=>{
+    console.log('scroll123')
 }
+
+
+const Txl: React.FC = () => {
+    return <div id="scrollDiv" onScroll={scroll}>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        <p>123</p>
+        </div>
+};
 
 export default Txl;
