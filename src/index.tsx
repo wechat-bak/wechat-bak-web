@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Wexin from './components/wexin';
-import Txl from './components/TXL';
+import Wx from './components/Wx';
+import Txl from './components/Txl';
+import Ybp from './components/Ybp';
 import { BrowserRouter ,useRoutes} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
@@ -16,8 +17,13 @@ const routeData = [
     element: <App />,
     children:[
       {
+        path: "/ybp",
+        element: <Ybp />,
+        index: true
+      },
+      {
         path: "/wx",
-        element: <Wexin />,
+        element: <Wx />,
         index: true
       },
       {

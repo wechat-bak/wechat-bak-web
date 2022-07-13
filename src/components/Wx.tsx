@@ -50,9 +50,8 @@ interface DataType {
   ];
   
 
-const Wexin: FC = () => {
+const Wx: FC = () => {
     return  <Table
-                
                 columns={columns}
                 dataSource={data}
                 bordered
@@ -61,4 +60,4 @@ const Wexin: FC = () => {
             />
 }
 
-export default Wexin;
+export default Wx;

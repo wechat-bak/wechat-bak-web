@@ -1,71 +1,56 @@
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   WechatOutlined,
 } from '@ant-design/icons';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout, Input } from 'antd';
 import React, { useState } from 'react';
 import LeftMenu from './components/LeftMenu';
+import WxListItem from './components/WxListItem';
 import "./App.css"
-import { Outlet , useLocation,Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-const { Header, Sider, Content } = Layout;
-
-const breadcrumbNameMap: Record<string, string> = {
-  '/wx': '微信',
-  '/txl': '通讯录',
-};
+const { Sider, Content } = Layout;
+const { Search } = Input;
 
 
 
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const location = useLocation();
-  const pathSnippets = location.pathname.split('/').filter(i => i);
-
-  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-    return (
-      <Breadcrumb.Item key={url}>
-        <Link to={url}>{breadcrumbNameMap[url]}</Link>
-      </Breadcrumb.Item>
-    );
-  });
-
-  const breadcrumbItems = [
-    <Breadcrumb.Item key="home">
-      <Link to="/">首页</Link>
-    </Breadcrumb.Item>,
-  ].concat(extraBreadcrumbItems);
-
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}
+      <Sider
         style={{
           height: '100vh',
         }}
       >
         <div className="logo" ><WechatOutlined />  微信备份</div>
-        <LeftMenu />
+        <LeftMenu name='1fasd' age={123} setCollapsed={setCollapsed} />
       </Sider>
-      <Sider 
+
+      <Sider
+        trigger={null}
+        collapsed={collapsed}
+        collapsedWidth={0}
         width={300}
         style={{
-          // height: '100vh',
-          backgroundColor:'grey',
+          height: '100vh',
+          backgroundColor: '#f0f2f5',
           color: '#FFF'
         }}
       >
-        123
+        <Search
+          placeholder="input search text"
+          enterButton="Search"
+          size="large"
+          style={{
+            // padding: '5px',
+          }}
+        />
+        <div id="wxlist">
+          <WxListItem />
+        </div>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0}}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed),
-          })}
-        </Header>
         <Content
           className="site-layout-background"
           style={{
@@ -74,7 +59,6 @@ const App: React.FC = () => {
             minHeight: 280,
           }}
         >
-          <Breadcrumb>{breadcrumbItems}</Breadcrumb>
           <Outlet />
         </Content>
       </Layout>

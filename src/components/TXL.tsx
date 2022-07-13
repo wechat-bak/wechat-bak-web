@@ -1,5 +1,5 @@
 import React from 'react';
-import './TXL.css'
+import './Txl.css'
 
 const scroll = ()=>{
     console.log('scroll123')
