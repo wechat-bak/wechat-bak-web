@@ -3,19 +3,22 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import {  FC } from 'react';
+import {  FC,useEffect } from 'react';
 import { useLocation ,Link} from 'react-router-dom';
+import axios from 'axios';
+import ChatList from './DataType'
 
 interface ILeftMenuProps {
   name?: string;
   age?: number;
   setCollapsed: (collapsed: boolean) => void;
+  setLoading: (loading: boolean) => void;
+  setChatLists: (chatList:ChatList[]) => void;
 }
-
 
 const LeftMenu: FC<ILeftMenuProps> = (props) => {
   let href = useLocation();
-  console.log(props);
+
   const getDefaultSelectedKeys = ():string[] => {
       if (href.pathname==='/wx') {
         return ["2"]
@@ -26,6 +29,20 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
       }
       return []
   }
+
+  const  getChatListData = ()=>{
+    axios.get('http://127.0.0.1:3000/api/chat/list?all=true&pageIndex=0&pageSize=0')
+    .then(res=>{
+      return res.data
+    })
+  }
+
+  useEffect(()=>{
+    props.setLoading(true)
+      setTimeout(() => {
+        props.setLoading(false)
+      },2000)
+  },[])
   return <Menu
     theme="dark"
     mode="inline"
@@ -36,7 +53,10 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
       }else{
         props.setCollapsed(true)
       }
-      
+      props.setLoading(true)
+      setTimeout(() => {
+        props.setLoading(false)
+      },2000)
     }}
     items={[
       {

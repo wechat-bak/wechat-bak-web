@@ -1,27 +1,38 @@
 import { UserOutlined } from '@ant-design/icons';
-import * as React from 'react';
+import {FC} from 'react';
 import './WxListItem.css';
 import { Avatar, Badge, Card } from 'antd';
+import ChatList from './DataType'
+
 
 const { Meta } = Card;
 
 interface IWxListItemProps {
+    loading?:boolean;
+    chatLists:ChatList[];
 }
 
-const WxListItem: React.FunctionComponent<IWxListItemProps> = (props) => {
-    let list: any = [];
 
-    for (let index = 0; index < 20; index++) {
+const WxListItem: FC<IWxListItemProps> = (props) => {
+    let list: any = [];
+    
+    // useEffect(()=>{
+    //     async function f(){
+    //         let res =await axios.get('http://127.0.0.1:3000/api/chat/list?all=true&pageIndex=0&pageSize=0')
+    //         setChatLists(res.data.rows)
+    //     }
+    // },[])
+    props.chatLists.forEach(item => {
         list.push(
-            <Card style={{ width: 300 }} key={index}>
+            <Card style={{ width: 300 }} key={item.talker} loading={props.loading}>
                 <Meta
-                    avatar={<Badge count={1}><Avatar size="large" icon={<UserOutlined />} src='https://avatars.githubusercontent.com/u/33391732?s=40&v=4' /></Badge>}
-                    title="Card title"
-                    description="This is the description"
+                    avatar={<Badge count={item.msgCount}><Avatar size="large" icon={<UserOutlined />} src={item.reserved1} /></Badge>}
+                    title={item.nickname}
+                    description={item.talker}
                 />
             </Card>
         )
-    }
+    });
     return list
 };
 

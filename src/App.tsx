@@ -7,6 +7,7 @@ import LeftMenu from './components/LeftMenu';
 import WxListItem from './components/WxListItem';
 import "./App.css"
 import { Outlet } from 'react-router-dom';
+import ChatList from './components/DataType'
 
 const { Sider, Content } = Layout;
 const { Search } = Input;
@@ -15,6 +16,9 @@ const { Search } = Input;
 
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [loading,setLoading]=useState(true)
+  // var list:ChatList[]
+  const [chatLists,setChatLists]=useState<ChatList[]>([])
 
   return (
     <Layout>
@@ -24,7 +28,7 @@ const App: React.FC = () => {
         }}
       >
         <div className="logo" ><WechatOutlined />  微信备份</div>
-        <LeftMenu name='1fasd' age={123} setCollapsed={setCollapsed} />
+        <LeftMenu name='1fasd' age={123} setCollapsed={setCollapsed} setLoading={setLoading} setChatLists={setChatLists}/>
       </Sider>
 
       <Sider
@@ -47,7 +51,7 @@ const App: React.FC = () => {
           }}
         />
         <div id="wxlist">
-          <WxListItem />
+          <WxListItem loading={loading} chatLists={chatLists}/>
         </div>
       </Sider>
       <Layout className="site-layout">
