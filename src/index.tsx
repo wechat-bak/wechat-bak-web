@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Wx from './components/Wx';
 import Txl from './components/Txl';
 import Ybp from './components/Ybp';
+import LeftMenu from './components/LeftMenu';
 import { BrowserRouter ,useRoutes} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
@@ -18,13 +19,11 @@ const routeData = [
     children:[
       {
         path: "/ybp",
-        element: <Ybp />,
-        index: true
+        element: <Ybp />
       },
       {
         path: "/wx",
-        element: <Wx />,
-        index: true
+        element: <Wx />
       },
       {
         path: "/txl",

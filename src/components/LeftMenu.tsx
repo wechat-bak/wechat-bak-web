@@ -3,7 +3,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import {  FC,useEffect } from 'react';
+import {  FC } from 'react';
 import { useLocation ,Link} from 'react-router-dom';
 import axios from 'axios';
 import ChatList from './DataType'
@@ -31,18 +31,14 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
   }
 
   const  getChatListData = ()=>{
+    props.setLoading(true)
     axios.get('http://127.0.0.1:3000/api/chat/list?all=true&pageIndex=0&pageSize=0')
     .then(res=>{
-      return res.data
+      props.setChatLists(res.data.rows)
+      props.setLoading(false)
     })
   }
 
-  useEffect(()=>{
-    props.setLoading(true)
-      setTimeout(() => {
-        props.setLoading(false)
-      },2000)
-  },[])
   return <Menu
     theme="dark"
     mode="inline"
@@ -53,10 +49,7 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
       }else{
         props.setCollapsed(true)
       }
-      props.setLoading(true)
-      setTimeout(() => {
-        props.setLoading(false)
-      },2000)
+      getChatListData();
     }}
     items={[
       {
