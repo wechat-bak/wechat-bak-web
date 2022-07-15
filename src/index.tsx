@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Wx from './components/Wx';
 import Txl from './components/Txl';
 import Ybp from './components/Ybp';
-import LeftMenu from './components/LeftMenu';
+import WxList from './components/WxList';
 import { BrowserRouter ,useRoutes} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
@@ -23,11 +23,23 @@ const routeData = [
       },
       {
         path: "/wx",
-        element: <Wx />
+        element: <WxList />,
+        children:[
+          {
+            path: ":talker",
+            element: <Wx />
+          },
+        ]
       },
       {
         path: "/txl",
-        element: <Txl />,
+        element: <WxList />,
+        children:[
+          {
+            path: ":talker",
+            element: <Txl />
+          },
+        ]
       }
     ]
   }

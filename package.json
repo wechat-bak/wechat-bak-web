@@ -10,6 +10,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "ahooks": "^3.5.2",
     "antd": "^4.21.5",
     "axios": "^0.27.2",
     "react": "^18.2.0",
@@ -46,5 +47,5 @@
   "devDependencies": {
     "@types/react-scroll": "^1.8.3"
   },
-  "proxy": "http://172.30.24.201:9999"
+  "proxy": "http://127.0.0.1:9999"
 }

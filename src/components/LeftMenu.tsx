@@ -5,15 +5,13 @@ import {
 import { Menu } from 'antd';
 import {  FC } from 'react';
 import { useLocation ,Link} from 'react-router-dom';
-import axios from 'axios';
-import ChatList from './DataType'
 
 interface ILeftMenuProps {
-  name?: string;
-  age?: number;
-  setCollapsed: (collapsed: boolean) => void;
-  setLoading: (loading: boolean) => void;
-  setChatLists: (chatList:ChatList[]) => void;
+  // name?: string;
+  // age?: number;
+  // setCollapsed: (collapsed: boolean) => void;
+  // setLoading: (loading: boolean) => void;
+  // setChatLists: (chatList:ChatList[]) => void;
 }
 
 const LeftMenu: FC<ILeftMenuProps> = (props) => {
@@ -30,26 +28,13 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
       return []
   }
 
-  const  getChatListData = ()=>{
-    props.setLoading(true)
-    axios.get('http://127.0.0.1:3000/api/chat/list?all=true&pageIndex=0&pageSize=0')
-    .then(res=>{
-      props.setChatLists(res.data.rows)
-      props.setLoading(false)
-    })
-  }
-
   return <Menu
     theme="dark"
     mode="inline"
     defaultSelectedKeys={getDefaultSelectedKeys()}
     onSelect={(e)=>{
-      if(e.key!=="1"){
-        props.setCollapsed(false)
-      }else{
-        props.setCollapsed(true)
-      }
-      getChatListData();
+      
+      // getChatListData();
     }}
     items={[
       {
