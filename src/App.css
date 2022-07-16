@@ -67,12 +67,12 @@
 
 
 #wxlist{
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 5px;
   height: calc(100vh - 45px);
 }
 
-#wxlist::-webkit-scrollbar {
+/* #wxlist::-webkit-scrollbar {
   width: 5px;
   border-radius: 5px;
 }
@@ -83,4 +83,4 @@
 #wxlist::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background: rgb(188, 192, 187);
-} 
+}  */

@@ -31,12 +31,15 @@ const WxList: FC<IWxListProps> = (props) => {
                 url = 'http://127.0.0.1:3000/api/chat/list?all=fasle&pageIndex=2&pageSize=10';
                 break;
         }
-
-        axios.get(url)
-        .then(res=>{
-            setChatLists(res.data.rows)
+        if(url===""){
             setDisplay("none")
-        })
+        }else{
+            axios.get(url)
+            .then(res=>{
+                setChatLists(res.data.rows)
+                setDisplay("none")
+            })
+        }
     },[href])
 
 
@@ -57,19 +60,8 @@ const WxList: FC<IWxListProps> = (props) => {
                 // padding: '5px',
             }}
         />
-        <div id="wxlist">
-            <Card style={{ 
-                width: 300, 
-                marginTop: 16,
-                display:display }} loading={true}>
-            <Meta
-            avatar=""
-            title="Card title"
-            description="This is the description"
-            />
-        </Card>
-            <WxListItem chatLists={chatLists} />
-        </div>
+            
+            <WxListItem chatLists={chatLists} display={display} />
     </Sider>
     <Content
       className="site-layout-background"

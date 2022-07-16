@@ -1,13 +1,12 @@
-import React, { Children } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Wx from './components/Wx';
-import Txl from './components/Txl';
 import Ybp from './components/Ybp';
 import WxList from './components/WxList';
 import { BrowserRouter ,useRoutes} from "react-router-dom";
+import Chat from './components/Chat';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,7 +26,7 @@ const routeData = [
         children:[
           {
             path: ":talker",
-            element: <Wx />
+            element: <Chat />
           },
         ]
       },
@@ -37,7 +36,7 @@ const routeData = [
         children:[
           {
             path: ":talker",
-            element: <Txl />
+            element: <Chat />
           },
         ]
       }
