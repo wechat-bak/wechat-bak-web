@@ -1,7 +1,7 @@
 import {FC,useEffect,useState} from 'react';
 import { Layout, Input } from 'antd';
 import { useLocation,Outlet } from 'react-router-dom';
-import ChatList from './DataType'
+import {ChatList} from './DataType'
 import WxListItem from './WxListItem';
 import axios from 'axios';
 

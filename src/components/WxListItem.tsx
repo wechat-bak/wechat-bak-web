@@ -2,7 +2,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { FC,MouseEventHandler } from 'react';
 import './WxListItem.css';
 import { Avatar, Badge, Card } from 'antd';
-import ChatList from './DataType'
+import {ChatList} from './DataType'
 import { useNavigate } from 'react-router-dom';
 
 

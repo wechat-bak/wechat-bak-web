@@ -1,13 +1,4 @@
-type ChatList= {
-    talker?:string
-    msgCount?:number
-    conRemark?:string
-    createTime?:number
-    localAvatar?:string
-    nickname?:string
-    reserved1?:string
-    reserved2?:string
-}
+
 interface EmojiInfo {
     md5: string;
     cdnUrl: string;
@@ -38,5 +29,4 @@ interface ChatMessageList {
     type: number;
 }
 
-  
-export type {ChatList,ChatMessageList};
+export default ChatMessageList;
