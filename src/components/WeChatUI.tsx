@@ -1,8 +1,9 @@
-import { FC,useEffect, useState } from 'react';
-import Chat, { Bubble, useMessages } from '@chatui/core';
+import { FC, useEffect, useState } from 'react';
+import Chat, { Bubble, useMessages, SystemMessage } from '@chatui/core';
+import { Image } from 'antd';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import {ChatMessageList} from './DataType'
+import { ChatMessageList, UserInfo } from './DataType'
 
 interface IWeChatUIProps {
   // talker: string;
@@ -44,28 +45,44 @@ const getType = (type: number): string => {
 
 
 const WeChatUI: FC<IWeChatUIProps> = (props) => {
-  const { messages, appendMsg,prependMsgs,resetList } = useMessages();
+  const { messages, appendMsg, prependMsgs, resetList } = useMessages();
   let href = useLocation();
-  const [pageIndex,setPageIndex] = useState(1);
-  let url = "/api/chat/detail?talker="+href.pathname.split("/").pop()+"&pageIndex="+pageIndex+"&pageSize=5";
-  console.log(url)
+
+  const [pageIndex, setPageIndex] = useState(1);
+  const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo);
+  const [username, setUserName] = useState("");
+
+  let useInfoUrl = "/api/user/info?username=" + href.pathname.split("/").pop();
+  let msgUrl = "/api/chat/detail?talker=" + username + "&pageIndex=" + pageIndex + "&pageSize=5";
   useEffect(() => {
-    resetList([]);
-    setPageIndex(1);
-  }, [href.pathname,resetList]);
+    // 获取个人信息
+    axios.get(useInfoUrl).then((res) => {
+      setUserInfo(res.data);
+      resetList([]);
+      setPageIndex(1);
+      setUserName(href.pathname.split("/").pop() || "");
+    })
+  }, [useInfoUrl, resetList]);
+
   useEffect(() => {
-    axios.get(url).then(res => {
+    axios.get(msgUrl).then(res => {
       res.data.rows.forEach((row: ChatMessageList) => {
+        let number = new Number(row.type);
         prependMsgs([{
-          _id:Math.floor(Math.random() * 9999999),
-          type: getType(row.type),
-          content: {text:row.content},
-          position: row.isSend===1?"right":"left"
-        }])
+          _id: row.msgSvrId + Math.floor(Math.random() * 9999),
+          type: number.toString(),
+          content: row,
+          position: row.isSend === 1 ? "right" : "left",
+          user: {
+            avatar: userInfo.reserved2,
+            name: userInfo.conRemark !== "" ? userInfo.conRemark : userInfo.nickName,
+          },
+          hasTime: true,
+        }]);
       });
     })
-  }, [url,prependMsgs]);
-  
+  }, [msgUrl, prependMsgs]);
+
 
 
   const handleSend = (type: string, val: string) => {
@@ -92,18 +109,49 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
   }
 
   const renderMessageContent = (msg: any) => {
-    const { type, content } = msg;
-
+    // const { type, c: ChatMessageList } = msg;
     // 根据消息类型来渲染
-    switch (type) {
-      case 'text':
-        return <Bubble content={content.text} />;
-      case 'image':
-        return (
-          <Bubble type="image">
-            <img src={content.picUrl} alt="" />
-          </Bubble>
-        );
+    switch (msg.type) {
+      case "1":
+        // 文本
+        return <Bubble content={msg.content.content} />;
+      case "3":
+        // 图片
+        return <Bubble type="image">
+          <Image src={msg.content.mediaSourcePath===""?msg.content.mediaPath:msg.content.mediaSourcePath} alt="图片" />
+        </Bubble>;
+      case "34":
+        // 语音
+        return "voice";
+      case "43":
+        // 视频
+        return "video";
+      case "47":
+        // 大表情
+        return <Bubble type="image">
+          <img src={msg.content.emojiInfo.cdnUrl} alt="图片" />
+        </Bubble>;
+      case "49":
+        // 卡片信息
+        return <Bubble content={"[卡片信息]"} />;;
+      case "10000":
+        // 撤回消息
+        return "text";
+      case "268445456":
+        // 撤回消息
+        return <SystemMessage content={msg.content.content} />;
+      case "436207665":
+        // 微信红包
+        return "text";
+      case "419430449":
+        // 微信转账
+        return "text";
+      case "1090519089":
+        // 文件
+        return "";
+      case "318767153":
+        // 公众号推送
+        return "text";
       default:
         return null;
     }
@@ -111,7 +159,7 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
 
   const onRefresh = (): Promise<any> => {
     return new Promise((resolve) => {
-      setPageIndex(pageIndex+1)
+      setPageIndex(pageIndex + 1)
     })
   }
 
@@ -125,16 +173,15 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
         background: 'url(https://img.alicdn.com/tfs/TB17Ne9u8r0gK0jSZFnXXbRRXXa-820-1660.png) center center / cover no-repeat',
 
       }}>
-        {/* <Loading tip="加载中..." /> */}
-        
+
       <Chat
-        navbar={{ title: '智能助理'}}
+        navbar={{ title: userInfo.conRemark !== "" ? userInfo.conRemark : userInfo.nickName, className: "wechat-navbar" }}
         messages={messages}
         renderMessageContent={renderMessageContent}
         onQuickReplyClick={handleQuickReplyClick}
         onSend={handleSend}
         onRefresh={onRefresh}
-        loadMoreText="more"
+        loadMoreText="加载更多"
       />
     </div>
   );

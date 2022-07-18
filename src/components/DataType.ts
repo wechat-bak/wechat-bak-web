@@ -1,4 +1,4 @@
-type ChatList= {
+interface ChatList{
     talker?:string
     msgCount?:number
     conRemark?:string
@@ -38,5 +38,14 @@ interface ChatMessageList {
     type: number;
 }
 
-  
-export type {ChatList,ChatMessageList};
+interface UserInfo {
+	userName:    string;
+	alias :        string;
+	conRemark:     string;
+	nickName  :    string ;
+	reserved1 :    string ;
+	reserved2  :   string ;
+	localAvatar:   string ;
+}
+
+export type {ChatList,ChatMessageList,UserInfo};
