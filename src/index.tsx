@@ -6,7 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import Ybp from './components/Ybp';
 import WxList from './components/WxList';
 import { BrowserRouter ,useRoutes} from "react-router-dom";
-import Chat from './components/Chat';
+import Chat from './components/WeChatUI';
+
+// 引入样式
+import '@chatui/core/dist/index.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

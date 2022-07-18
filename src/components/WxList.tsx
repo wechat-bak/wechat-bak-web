@@ -1,5 +1,5 @@
 import {FC,useEffect,useState} from 'react';
-import { Layout, Input,Card } from 'antd';
+import { Layout, Input } from 'antd';
 import { useLocation,Outlet } from 'react-router-dom';
 import ChatList from './DataType'
 import WxListItem from './WxListItem';
@@ -7,8 +7,6 @@ import axios from 'axios';
 
 const { Sider, Content } = Layout;
 const { Search } = Input;
-
-const { Meta } = Card;
 
 interface IWxListProps {
 }
