@@ -36,6 +36,8 @@ interface ChatMessageList {
     msgSvrId: string;
     talker: string;
     type: number;
+    isChatRoom:boolean;
+    userInfo:UserInfo;
 }
 
 interface UserInfo {
@@ -49,11 +51,4 @@ interface UserInfo {
     
 }
 
-interface TmpUserInfo {
-    userInfo: UserInfo;
-    id:string;
-    type:string;
-    content:ChatMessageList;
-}
-
-export type {ChatList,ChatMessageList,UserInfo,TmpUserInfo};
+export type {ChatList,ChatMessageList,UserInfo};
