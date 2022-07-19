@@ -9,8 +9,6 @@ interface IWeChatUIProps {
   // talker: string;
 }
 
-
-
 const WeChatUI: FC<IWeChatUIProps> = (props) => {
   const { messages, appendMsg, prependMsgs, resetList } = useMessages();
   let href = useLocation();
@@ -34,16 +32,16 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
   useEffect(() => {
     axios.get(msgUrl).then(res => {
       res.data.rows.forEach((row: ChatMessageList) => {
-        let number = new Number(row.type);
         let id = row.msgSvrId + Math.floor(Math.random() * 9999);
-        let type = number.toString()
+
         prependMsgs([{
           _id: id,
-          type: type,
+          type: row.type+"",
           content: row,
           position: row.isSend === 1 ? "right" : "left",
           user: {
-            avatar: row.userInfo.reserved2
+            avatar: row.userInfo.reserved2!==""?row.userInfo.reserved2:row.userInfo.localAvatar,
+            name: row.userInfo.userName,
           },
           hasTime: true,
           createdAt: row.createTime,
@@ -51,7 +49,6 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
       });
     })
   }, [msgUrl, prependMsgs]);
-
 
 
   const handleSend = (type: string, val: string) => {
