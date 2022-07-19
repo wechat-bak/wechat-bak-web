@@ -46,6 +46,14 @@ interface UserInfo {
 	reserved1 :    string ;
 	reserved2  :   string ;
 	localAvatar:   string ;
+    
 }
 
-export type {ChatList,ChatMessageList,UserInfo};
+interface TmpUserInfo {
+    userInfo: UserInfo;
+    id:string;
+    type:string;
+    content:ChatMessageList;
+}
+
+export type {ChatList,ChatMessageList,UserInfo,TmpUserInfo};

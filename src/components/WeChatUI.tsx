@@ -1,56 +1,25 @@
 import { FC, useEffect, useState } from 'react';
 import Chat, { Bubble, useMessages, SystemMessage } from '@chatui/core';
 import { Image } from 'antd';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useLocation } from 'react-router-dom';
-import { ChatMessageList, UserInfo } from './DataType'
+import { ChatMessageList, UserInfo,TmpUserInfo } from './DataType'
 
 interface IWeChatUIProps {
   // talker: string;
 }
 
-const getType = (type: number): string => {
-  switch (type) {
-    case 1:
-      // 文本
-      return "text";
-    case 3:
-      // 图片
-      return "image";
-    case 34:
-      // 语音
-      return "voice";
-    case 43:
-      // 视频
-      return "video";
-    case 47:
-      // 大表情
-      return "image";
-    case 1000:
-      // 撤回消息
-      return "text";
-    case 436207665:
-      // 微信红包
-      return "text";
-    case 419430449:
-      // 微信转账
-      return "text";
-    case 1090519089:
-      // 文件
-      return "";
-
-  }
-  return "";
-}
 
 
 const WeChatUI: FC<IWeChatUIProps> = (props) => {
-  const { messages, appendMsg, prependMsgs, resetList } = useMessages();
+  const { messages, appendMsg, prependMsgs, resetList,updateMsg } = useMessages();
   let href = useLocation();
 
   const [pageIndex, setPageIndex] = useState(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo);
+  const [tmpUserInfo, setTmpUserInfo] = useState<TmpUserInfo>({} as TmpUserInfo);
   const [username, setUserName] = useState("");
+  const [isChatRoom, setIsChatRoom] = useState(false);
 
   let useInfoUrl = "/api/user/info?username=" + href.pathname.split("/").pop();
   let msgUrl = "/api/chat/detail?talker=" + username + "&pageIndex=" + pageIndex + "&pageSize=5";
@@ -61,23 +30,68 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
       resetList([]);
       setPageIndex(1);
       setUserName(href.pathname.split("/").pop() || "");
+      console.log(href.pathname.split("/").pop());
+      let uname = href.pathname.split("/").pop() || "";
+      if(uname.split("@").length>1 && uname.split("@")[1]==="chatroom"){
+        setIsChatRoom(true);
+        console.log('setIsChatRoom--true');
+      }else{
+        setIsChatRoom(false);
+        console.log('setIsChatRoom--false');
+      }
     })
   }, [useInfoUrl, resetList]);
+
+  const getuserInfoByUsername= (username:string,id:string,type:string,row: ChatMessageList) => {
+    let useInfoUrl = "/api/user/info?username=" + username;
+    axios.get(useInfoUrl).then((res) => {
+      let uinfo = {} as TmpUserInfo;
+      uinfo.id = id;
+      uinfo.userInfo = res.data;
+      uinfo.type = type;
+      uinfo.content = row;
+      setTmpUserInfo(uinfo);
+    });
+  }
+
+  useEffect(() => {
+    if (JSON.stringify(tmpUserInfo)!=="{}"){
+      updateMsg(tmpUserInfo.id,{
+        type: tmpUserInfo.type,
+        content: tmpUserInfo.content,
+        user: {
+          avatar: tmpUserInfo.userInfo.reserved2
+        },
+      });
+    }
+    
+  },[tmpUserInfo])
 
   useEffect(() => {
     axios.get(msgUrl).then(res => {
       res.data.rows.forEach((row: ChatMessageList) => {
         let number = new Number(row.type);
+        let uinfo = userInfo;
+        let id = row.msgSvrId + Math.floor(Math.random() * 9999);
+        console.log(isChatRoom);
+        let type = number.toString();
+        if (isChatRoom){
+          let uname = row.content.split(':', 1)[0];
+          if (row.isSend == 0) {
+            row.content = row.content.slice(uname.length + 1);
+          }
+          getuserInfoByUsername(uname,id,type,row);          
+        }
         prependMsgs([{
-          _id: row.msgSvrId + Math.floor(Math.random() * 9999),
-          type: number.toString(),
+          _id: id,
+          type: type,
           content: row,
           position: row.isSend === 1 ? "right" : "left",
           user: {
-            avatar: userInfo.reserved2,
-            name: userInfo.conRemark !== "" ? userInfo.conRemark : userInfo.nickName,
+            avatar: uinfo.reserved2
           },
           hasTime: true,
+          createdAt: row.createTime,
         }]);
       });
     })
