@@ -15,3 +15,6 @@ code {
 .PullToRefresh::-webkit-scrollbar {
   display: none; /* Chrome Safari */
 }
+#scrollableDiv::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}

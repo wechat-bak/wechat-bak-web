@@ -1,9 +1,7 @@
-import {FC,useEffect,useState} from 'react';
+import { FC, useState } from 'react';
 import { Layout, Input } from 'antd';
-import { useLocation,Outlet } from 'react-router-dom';
-import {ChatList} from './DataType'
-import WxListItem from './WxListItem';
-import axios from 'axios';
+import NewUserChatList from './NewUserChatList';
+import Chat from './WeChatUI';
 
 const { Sider, Content } = Layout;
 const { Search } = Input;
@@ -12,45 +10,43 @@ interface IWxListProps {
 }
 
 
-const WxList: FC<IWxListProps> = (props) => {
-    const [chatLists,setChatLists]=useState<ChatList[]>([])
-    const [display,setDisplay] = useState("")
-    let href = useLocation();
 
-    useEffect(()=>{
-        let url = "";
-        console.log(href)
-        setDisplay("")
-        switch(href.pathname){
-            case "/wx":
-                url = 'http://127.0.0.1:3000/api/chat/list?all=true&pageIndex=1&pageSize=10';
-                break;
-            case "/txl":
-                url = 'http://127.0.0.1:3000/api/chat/list?all=fasle&pageIndex=2&pageSize=10';
-                break;
-        }
-        if(url===""){
-            setDisplay("none")
-        }else{
-            axios.get(url)
-            .then(res=>{
-                setChatLists(res.data.rows)
-                setDisplay("none")
-            })
-        }
-    },[href])
+const WxList: FC<IWxListProps> = (props) => {
+
+    const [searchName, setSearchName] = useState("");
+
+    const onSearch = (value: string) => setSearchName(value);
 
 
     return <Layout className="site-layout">
+
+        <Content
+            className="site-layout-background"
+            style={{
+                padding: 24,
+                minHeight: 280,
+            }}
+        >
+            <div style={{
+                textAlign: 'center',
+            }}>
+                <h1 style={{
+                    fontSize: '40px',
+                }}>聊天记录搜索</h1>
+                <Search placeholder="input search text" onSearch={onSearch} enterButton style={{ width: 500,marginBottom:30}} />
+            </div>
+
+            <NewUserChatList searchName={searchName} />
+        </Content>
         <Sider
-        width={300}
-        style={{
-            height: '100vh',
-            backgroundColor: '#f0f2f5',
-            color: '#FFF'
-        }}
-    >
-        <Search
+            width={410}
+            style={{
+                height: '100vh',
+                backgroundColor: '#FFF',
+                color: '#FFF'
+            }}
+        >
+            {/* <Search
             placeholder="input search text"
             enterButton="Search"
             size="large"
@@ -59,9 +55,10 @@ const WxList: FC<IWxListProps> = (props) => {
             }}
         />
             
-            <WxListItem chatLists={chatLists} display={display} />
-    </Sider>
-    <Content
+            <WxListItem chatLists={chatLists} display={display} /> */}
+            <Chat />
+        </Sider>
+        {/* <Content
       className="site-layout-background"
       style={{
         margin: '24px 16px',
@@ -70,8 +67,8 @@ const WxList: FC<IWxListProps> = (props) => {
       }}
     >
     <Outlet />
-    </Content>
-  </Layout>;
+    </Content> */}
+    </Layout>;
 };
 
 export default WxList;

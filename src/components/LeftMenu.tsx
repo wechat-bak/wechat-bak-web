@@ -1,6 +1,5 @@
 import {
   UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import {  FC } from 'react';
@@ -37,21 +36,21 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
       // getChatListData();
     }}
     items={[
-      {
-        key: '1',
-        icon: <UserOutlined />,
-        label: <Link to="ybp">仪表盘</Link>,
-      },
+      // {
+      //   key: '1',
+      //   icon: <UserOutlined />,
+      //   label: <Link to="ybp">仪表盘</Link>,
+      // },
       {
         key: '2',
         icon: <UserOutlined />,
-        label: <Link to="wx">微信</Link>,
+        label: <Link to="wx">聊天</Link>,
       },
-      {
-        key: '3',
-        icon: <VideoCameraOutlined />,
-        label: <Link to="txl">通讯录</Link>,
-      },
+      // {
+      //   key: '3',
+      //   icon: <VideoCameraOutlined />,
+      //   label: <Link to="txl">通讯录</Link>,
+      // },
     ]}
   />
 }

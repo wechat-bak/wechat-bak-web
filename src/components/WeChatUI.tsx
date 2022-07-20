@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import Chat, { Bubble, useMessages, SystemMessage } from '@chatui/core';
+import Chat, { Bubble, useMessages, SystemMessage,Video } from '@chatui/core';
 import { Image } from 'antd';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
@@ -36,11 +36,11 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
 
         prependMsgs([{
           _id: id,
-          type: row.type+"",
+          type: row.type + "",
           content: row,
           position: row.isSend === 1 ? "right" : "left",
           user: {
-            avatar: row.userInfo.reserved2!==""?row.userInfo.reserved2:row.userInfo.localAvatar,
+            avatar: row.userInfo.reserved2 !== "" ? row.userInfo.reserved2 : row.userInfo.localAvatar,
             name: row.userInfo.userName,
           },
           hasTime: true,
@@ -84,28 +84,34 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
       case "3":
         // 图片
         return <Bubble type="image">
-          <Image src={msg.content.mediaSourcePath===""?msg.content.mediaPath:msg.content.mediaSourcePath} alt="图片" />
+          <Image src={msg.content.mediaSourcePath || msg.content.mediaPath} alt="图片" />
         </Bubble>;
       case "34":
         // 语音
-        return "voice";
+        return <Bubble content="语音消息">
+        <Video src={ msg.content.mediaPath } />
+      </Bubble>;
       case "43":
         // 视频
-        return "video";
+        return <Bubble type="video">
+              <Video src={ msg.content.mediaPath } />
+            </Bubble>;
       case "47":
         // 大表情
         return <Bubble type="image">
           <img src={msg.content.emojiInfo.cdnUrl} alt="图片" />
         </Bubble>;
+      case "48":
+        return <Bubble content={"[位置消息😂]"} />;
       case "49":
         // 卡片信息
-        return <Bubble content={"[卡片信息]"} />;;
+        return <Bubble content={"[卡片信息]"} />;
       case "10000":
         // 系统消息
-        return "text";
+        return <div style={{ margin: "0 auto" }}><SystemMessage content={msg.content.content} /></div>;;
       case "268445456":
         // 撤回消息通知
-        return <div style={{margin: "0 auto"}}><SystemMessage content={msg.content.content} /></div>;
+        return <div style={{ margin: "0 auto" }}><SystemMessage content={msg.content.content} /></div>;
       case "436207665":
         // 微信红包
         return "text";
