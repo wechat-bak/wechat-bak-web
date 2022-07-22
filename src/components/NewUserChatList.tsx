@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, Skeleton, Badge } from 'antd';
+import { Avatar, Divider, List, Skeleton, Badge,Popover } from 'antd';
 import { useEffect, useState, FC } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ChatList } from './DataType'
@@ -18,6 +18,14 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
     const [pageIndex, setPageIndex] = useState(1);
     const navg = useNavigate()
 
+    const popoverUserInfo = (user:ChatList) => {
+        return <div>
+            <p>昵称: {user.nickname}</p>
+            <p>备注: {user.conRemark}</p>
+            <p>微信号: {user.alias}</p>
+            <p>微信ID: {user.talker}</p>
+        </div>
+    }
 
     const loadMoreData = () => {
         if (loading) {
@@ -89,7 +97,7 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
                             }}
                             key={item.talker}>
                             <List.Item.Meta
-                                avatar={<Badge count={item.msgCount}><Avatar src={item.localAvatar} /></Badge>}
+                                avatar={<Popover placement="rightTop" content={popoverUserInfo(item)} title="用户信息"><Badge count={item.msgCount}><Avatar src={item.localAvatar} /></Badge></Popover>}
                                 title={item.conRemark || item.nickname}
                                 description={item.talker}
                             />

@@ -1,5 +1,6 @@
 interface ChatList{
     talker?:string
+    alias?:string
     msgCount?:number
     conRemark?:string
     createTime?:number
