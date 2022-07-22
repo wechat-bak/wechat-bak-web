@@ -33,7 +33,7 @@ const WxList: FC<IWxListProps> = (props) => {
                 <h1 style={{
                     fontSize: '40px',
                 }}>聊天记录搜索</h1>
-                <Search placeholder="请输入要搜索的微信用户名" onSearch={onSearch} enterButton style={{ width: 500,marginBottom:30}} />
+                <Search placeholder="请输入要搜索的微信用户名" onSearch={onSearch} enterButton style={{ width: 500, marginBottom: 30 }} />
             </div>
 
             <NewUserChatList searchName={searchName} />
@@ -46,28 +46,8 @@ const WxList: FC<IWxListProps> = (props) => {
                 color: '#FFF'
             }}
         >
-            {/* <Search
-            placeholder="input search text"
-            enterButton="Search"
-            size="large"
-            style={{
-                // padding: '5px',
-            }}
-        />
-            
-            <WxListItem chatLists={chatLists} display={display} /> */}
             <Chat />
         </Sider>
-        {/* <Content
-      className="site-layout-background"
-      style={{
-        margin: '24px 16px',
-        // padding: 24,
-        minHeight: 280,
-      }}
-    >
-    <Outlet />
-    </Content> */}
     </Layout>;
 };
 

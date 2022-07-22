@@ -19,8 +19,8 @@ const LeftMenu: FC<ILeftMenuProps> = (props) => {
   const getDefaultSelectedKeys = ():string[] => {
       if (href.pathname==='/wx') {
         return ["2"]
-      }else if (href.pathname==='/txl') {
-        return ["3"]
+      }else if (href.pathname==='/') {
+        return ["2"]
       }else if (href.pathname==='/ybp') {
         return ["1"]
       }
