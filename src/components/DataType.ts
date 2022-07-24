@@ -8,6 +8,7 @@ interface ChatList{
     nickname?:string
     reserved1?:string
     reserved2?:string
+    userType?:number
 }
 interface EmojiInfo {
     md5: string;
