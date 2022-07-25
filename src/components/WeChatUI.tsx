@@ -84,7 +84,12 @@ const WeChatUI: FC<IWeChatUIProps> = (props) => {
       case "3":
         // 图片
         return <Bubble type="image">
-          <Image src={msg.content.mediaSourcePath || msg.content.mediaPath} alt="图片" />
+          <Image src={msg.content.mediaPath} 
+            fallback={msg.content.mediaSourcePath || msg.content.mediaBCKPath} 
+            preview={{
+              src: msg.content.mediaSourcePath || msg.content.mediaBCKPath,
+            }}
+            alt="图片" />
         </Bubble>;
       case "34":
         // 语音
