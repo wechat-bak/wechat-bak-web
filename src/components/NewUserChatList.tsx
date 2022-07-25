@@ -1,4 +1,4 @@
-import { Avatar, Divider, List, Skeleton, Badge,Popover,Tag  } from 'antd';
+import { Avatar, Divider, List, Skeleton, Badge, Popover, Tag,Spin,Image} from 'antd';
 import { useEffect, useState, FC } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ChatList } from './DataType'
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 interface INewUserChatListProps {
-    searchName?:string;
+    searchName?: string;
 }
 
 
@@ -17,18 +17,8 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
     const [total, setTotal] = useState(0);
     const [pageIndex, setPageIndex] = useState(1);
     const navg = useNavigate();
-    const [currUser,setCurrUser] = useState<ChatList>({} as ChatList);
 
-    const popoverUserInfo = () => {
-        return <div>
-            <p>昵称: {currUser.nickname}</p>
-            <p>备注: {currUser.conRemark}</p>
-            <p>微信号: {currUser.alias}</p>
-            <p>微信ID: {currUser.talker}</p>
-        </div>
-    }
-
-    const getTag = (user:ChatList) => {
+    const getTag = (user: ChatList) => {
         switch (user.userType) {
             case 1:
                 return <Tag color="#2db7f5">群聊</Tag>
@@ -77,7 +67,6 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
                 height: '75vh',
                 overflow: 'auto',
                 padding: '0 46px',
-                // border: '1px solid rgba(140, 140, 140, 0.35)',
             }}
         >
             <InfiniteScroll
@@ -90,7 +79,6 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
             >
                 <List
                     dataSource={data}
-                   
                     renderItem={item => (
 
                         <List.Item
@@ -98,7 +86,6 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
                                 cursor: 'pointer',
                             }}
                             onMouseEnter={(element) => {
-                                setCurrUser(item);
                                 element.currentTarget.style.backgroundColor = 'rgba(140, 140, 140, 0.35)';
                             }}
                             onMouseLeave={(element) => {
@@ -107,15 +94,25 @@ const NewUserChatList: FC<INewUserChatListProps> = (props) => {
                             onClick={() => {
                                 navg(item.talker || "");
                             }}
-                            
-                            key={item.talker+"_"+Math.random()}>
+
+                            key={item.talker + "_" + Math.random()}>
                             <List.Item.Meta
-                            
-                                avatar={<Popover placement="rightTop" content={popoverUserInfo()} title="用户信息"><Badge count={item.msgCount}><Avatar src={item.localAvatar} /></Badge></Popover>}
-                                title={<div>{item.conRemark || item.nickname} {getTag(item)}</div> }
+                                avatar={
+                                    <Popover placement="rightTop"
+                                        content={<div>
+                                            <p>昵称: {item.nickname}</p>
+                                            <p>备注: {item.conRemark}</p>
+                                            <p>微信号: {item.alias}</p>
+                                            <p>微信ID: {item.talker}</p>
+                                        </div>}
+                                        title="用户信息">
+                                            <Badge count={item.msgCount}><Avatar src={<Image src={item.localAvatar} fallback={item.reserved2} alt="头像"/>} /></Badge>
+                                    </Popover>
+                                }
+                                title={<div>{item.conRemark || item.nickname} {getTag(item)}</div>}
                                 description={item.talker}
                             />
-                            
+                            <Spin spinning={false} />
                         </List.Item>
 
                     )}
